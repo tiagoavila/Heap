@@ -2,7 +2,7 @@
 {
     public interface IHeap
     {
-        int[] GetHeap();
         public void Insert(int value);
+        int Pop();
     }
 }

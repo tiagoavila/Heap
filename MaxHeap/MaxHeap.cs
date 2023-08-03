@@ -10,7 +10,7 @@ namespace Heap
         public MaxHeap(int capacity)
         {
             _data = new int[capacity];    
-            _lastItemIndex = 0;
+            _lastItemIndex = -1;
         }
 
         /// <summary>
@@ -25,27 +25,67 @@ namespace Heap
         /// <param name="value"></param>
         public void Insert(int value)
         {
+            _lastItemIndex++;
             _data[_lastItemIndex] = value;
             int currentItemIndex = _lastItemIndex;
-            _lastItemIndex++;
 
-            while (currentItemIndex > 0 && _data[currentItemIndex] > _data[GetParentIndex(currentItemIndex)])
+            int parentIndex = GetParentIndex(currentItemIndex);
+
+            while (currentItemIndex > 0 && _data[currentItemIndex] > _data[parentIndex])
             {
                 //Swap
-                (_data[GetParentIndex(currentItemIndex)], _data[currentItemIndex]) = (_data[currentItemIndex], _data[GetParentIndex(currentItemIndex)]);
+                (_data[currentItemIndex], _data[parentIndex]) = (_data[parentIndex], _data[currentItemIndex]);
 
                 //Set new Item to be the Parent
-                currentItemIndex = GetParentIndex(currentItemIndex);
+                currentItemIndex = parentIndex;
+                parentIndex = GetParentIndex(currentItemIndex);
             }
         }
 
-        public int[] GetHeap()
+        public int Pop()
         {
-            return _data;
+            int returnValue = _data[0];
+            _data[0] = _data[_lastItemIndex];
+            _data[_lastItemIndex] = 0;
+            _lastItemIndex--;
+
+            int currentItemIndex = 0;
+
+            while (HasChildWithAGreaterValue(currentItemIndex))
+            {
+                int indexChildWithGreaterValue = GetIndexOfChildWithGreaterValue(currentItemIndex);
+                (_data[currentItemIndex], _data[indexChildWithGreaterValue]) = (_data[indexChildWithGreaterValue], _data[currentItemIndex]);
+                currentItemIndex = indexChildWithGreaterValue;
+            }
+
+            return returnValue;
         }
 
         private int GetParentIndex(int index) => (index - 1) / 2;
+
         private int GetLeftChildIndex(int index) => (index * 2) + 1;
+
         private int GetRightChildIndex(int index) => (index * 2) + 2;
+
+        private bool HasChildWithAGreaterValue(int index)
+        {
+            int leftChildIndex = GetLeftChildIndex(index);
+            int rightChildIndex = GetRightChildIndex(index);
+            return _data[index] < _data[leftChildIndex] || (rightChildIndex < _data.Length && _data[index] < _data[rightChildIndex]);
+        }
+
+        private int GetIndexOfChildWithGreaterValue(int index)
+        {
+            int leftChildIndex = GetLeftChildIndex(index);
+            int rightChildIndex = GetRightChildIndex(index);
+
+            if (rightChildIndex > _data.Length || _data[rightChildIndex] == 0)
+                return leftChildIndex;
+            
+            int leftChildValue = _data[leftChildIndex];
+            int rightChildValue = _data[rightChildIndex];
+
+            return rightChildValue > leftChildValue ? rightChildIndex : leftChildIndex;
+        }
     }
 }

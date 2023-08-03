@@ -11,10 +11,10 @@ namespace Heap.Test
         }
 
         [Test]
-        public void Test1()
+        public void MaxHeapWorksByDoingInsertsAndPops()
         {
-            int[] _testHeap = new int[] { 100, 88, 25, 87, 16, 8, 12, 86, 50, 2, 15, 3 };
-            MaxHeap maxHeap = new(_testHeap.Length);
+            int[] testHeap = new int[] { 100, 88, 87, 86, 50, 25, 16, 15, 12, 8, 3, 2 };
+            MaxHeap maxHeap = new(testHeap.Length);
             maxHeap.Insert(8);
             maxHeap.Insert(3);
             maxHeap.Insert(2);
@@ -28,7 +28,11 @@ namespace Heap.Test
             maxHeap.Insert(87);
             maxHeap.Insert(88);
 
-            Assert.Equals(_testHeap, maxHeap.GetHeap());
+            for (int i = 0; i < testHeap.Length; i++)
+            {
+                int poppedValue = maxHeap.Pop();
+                Assert.That(testHeap[i], Is.EqualTo(poppedValue));
+            }
         }
     }
 }
