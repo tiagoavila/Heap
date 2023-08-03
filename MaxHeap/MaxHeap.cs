@@ -28,7 +28,6 @@ namespace Heap
             _lastItemIndex++;
             _data[_lastItemIndex] = value;
             int currentItemIndex = _lastItemIndex;
-
             int parentIndex = GetParentIndex(currentItemIndex);
 
             while (currentItemIndex > 0 && _data[currentItemIndex] > _data[parentIndex])
@@ -44,9 +43,7 @@ namespace Heap
 
         public int Pop()
         {
-            int returnValue = _data[0];
-            _data[0] = _data[_lastItemIndex];
-            _data[_lastItemIndex] = 0;
+            (int returnValue, _data[0], _data[_lastItemIndex]) = (_data[0], _data[_lastItemIndex], 0);
             _lastItemIndex--;
 
             int currentItemIndex = 0;
