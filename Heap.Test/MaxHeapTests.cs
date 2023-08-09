@@ -34,5 +34,20 @@ namespace Heap.Test
                 Assert.That(testHeap[i], Is.EqualTo(poppedValue));
             }
         }
+
+        [Test]
+        public void HeapifyAnArrayWorks()
+        {
+            int[] testHeap = new int[] { 100, 88, 87, 86, 50, 25, 16, 15, 12, 8, 3, 2 };
+            int[] arrayToHeapify = new int[] { 87, 3, 50, 86, 2, 88, 100, 12, 25, 15, 8, 16 };
+            MaxHeap maxHeap = new(arrayToHeapify.Length);
+            maxHeap.Heapify(arrayToHeapify);
+
+            for (int i = 0; i < testHeap.Length; i++)
+            {
+                int poppedValue = maxHeap.Pop();
+                Assert.That(testHeap[i], Is.EqualTo(poppedValue));
+            }
+        }
     }
 }

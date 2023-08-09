@@ -51,11 +51,47 @@ namespace Heap
             while (HasChildWithAGreaterValue(currentItemIndex))
             {
                 int indexChildWithGreaterValue = GetIndexOfChildWithGreaterValue(currentItemIndex);
-                (_data[currentItemIndex], _data[indexChildWithGreaterValue]) = (_data[indexChildWithGreaterValue], _data[currentItemIndex]);
+                Swap(_data, currentItemIndex, indexChildWithGreaterValue);
                 currentItemIndex = indexChildWithGreaterValue;
             }
 
             return returnValue;
+        }
+
+        public void Heapify(int[] array)
+        {
+            _lastItemIndex = array.Length - 1;
+
+            for (int i = array.Length / 2; i >= 0; i--)
+            {
+                DoHeapify(array, i);
+            }
+
+            _data = array;
+        }
+
+        private void DoHeapify(int[] array, int index)
+        {
+            int indexOfLargestValue = index;
+            int leftIndex = GetLeftChildIndex(index);
+            int rightIndex = GetRightChildIndex(index);
+
+            if (leftIndex < array.Length && array[leftIndex] > array[index]) 
+                indexOfLargestValue = leftIndex;
+
+            if (rightIndex < array.Length && array[rightIndex] > array[indexOfLargestValue])
+                indexOfLargestValue = rightIndex;
+
+            if (indexOfLargestValue != index)
+            {
+                Swap(array, index, indexOfLargestValue);
+                DoHeapify(array, indexOfLargestValue);
+            }
+        }
+
+        private static void Swap(int[] array, int indexA, int indexB)
+        {
+            (array[indexA], array[indexB]) = (array[indexB], array[indexA]);
         }
 
         private int GetParentIndex(int index) => (index - 1) / 2;
@@ -68,7 +104,7 @@ namespace Heap
         {
             int leftChildIndex = GetLeftChildIndex(index);
             int rightChildIndex = GetRightChildIndex(index);
-            return _data[index] < _data[leftChildIndex] || (rightChildIndex < _data.Length && _data[index] < _data[rightChildIndex]);
+            return (leftChildIndex < _data.Length && _data[leftChildIndex] > _data[index]) || (rightChildIndex < _data.Length && _data[rightChildIndex] > _data[index]);
         }
 
         private int GetIndexOfChildWithGreaterValue(int index)
