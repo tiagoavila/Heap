@@ -71,11 +71,16 @@ namespace Heap
         /// <summary>
         /// Apply the Heap property to an unsorted array, in summary the algorithm checks every Node that has children (the parents),
         /// checking if the children has greater value, swap if it has a greater value and then check the sub-trees.
-        /// Do that until checking all parents.
+        /// Do that until checking all parents. That's a top-down approach.
+        /// 
+        /// https://stackoverflow.com/questions/70025649/heapify-vs-heap-sort-vs-construct-heap
+        /// 
+        /// Heapify is a process of converting an array into a heap data structure, it does not sort the array, 
+        /// it just makes sure that the array follows the heap property where for each index i as parent, children would be 2i+1 and 2i+2
         /// 
         /// A detailed explanation is the following:
         /// <list type="number">
-        ///     <item><description>Go through every Item that has children checking if any of them as a greater value</description></item>
+        ///     <item><description>Go through every Item that has children checking if any of them has a greater value</description></item>
         ///     <item><description>If a children has a greater value, swap the child with largest value to the position of the parent 
         ///     and recursivelly check the children of the child index that had the largest value, 
         ///     this will apply the Heap property to all subtrees below the initial Parent</description></item>
